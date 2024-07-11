@@ -1,4 +1,5 @@
 name: INFRASTRUCTURE-PROVISIONING
+
 on:
   workflow_dispatch:
 
@@ -7,6 +8,11 @@ jobs:
     name: 'Infrastructure Setup'
     runs-on: ubuntu-latest
 
+    env:
+      TF_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
+      TF_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
+      TF_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
+
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
@@ -14,25 +20,37 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Configure Terraform Backend
+        run: |
+          echo "terraform {
+            backend \"gcs\" {
+              bucket  = \"your-bucket-name\"
+              prefix  = \"terraform/state\"
+            }
+          }" > backend.tf
+
       - name: Terraform Init
         working-directory: ./terraform
-        run: terraform init
-        env:
-          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
+        run: |
+          terraform init \
+            -backend-config="credentials=${TF_GOOGLE_CREDENTIALS}"
 
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform
-        run: terraform plan -out=tfplan -detailed-exitcode
-        env:
-          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
-          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
-          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
+        run: |
+          terraform plan \
+            -out=tfplan \
+            -detailed-exitcode \
+            -var="user_name=${TF_USER_NAME}" \
+            -var="password=${TF_PASSWORD}" \
+            -var="google_credentials=${TF_GOOGLE_CREDENTIALS}"
 
       - name: Terraform Apply
         working-directory: ./terraform
-        run: terraform apply -auto-approve tfplan
-        env:
-          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
-          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
-          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
+        run: |
+          terraform apply \
+            -auto-approve tfplan \
+            -var="user_name=${TF_USER_NAME}" \
+            -var="password=${TF_PASSWORD}" \
+            -var="google_credentials=${TF_GOOGLE_CREDENTIALS}"
