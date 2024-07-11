@@ -35,8 +35,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./terraform
-        if: steps.plan.outcome == 'success' && steps.plan.outputs.exitcode == 2
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve
         env:
           TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
