@@ -1,9 +1,5 @@
 name: INFRASTRUCTURE-PROVISIONING
 on:
-  push:
-    branches: ["main", "golden", "develop"]
-  pull_request:
-    types: [opened]
   workflow_dispatch:
 
 jobs:
@@ -35,7 +31,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./terraform
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve tfplan
         env:
           TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
