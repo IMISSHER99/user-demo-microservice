@@ -5,12 +5,18 @@ terraform {
       version = "5.37.0"
     }
   }
+
+  backend "gcs" {
+    bucket = "terraform-bucket-github-actions"
+    prefix = "terraform/state"
+  }
+
 }
 
 provider "google" {
   project = var.project_id
   region = var.project_region
-  credentials = var.GOOGLE_CREDENTIALS
+  credentials = var.GOOGLE_APPLICATION_CREDENTIALS
 }
 
 resource "google_sql_database_instance" "postgres-database-instance" {
