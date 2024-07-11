@@ -1,0 +1,11 @@
+variable "project_id" {}
+variable "project_region" {}
+variable "database_type" {}
+variable "database_instance_name" {}
+variable "machine_type" {}
+variable "availability_type" {}
+variable "edition" {}
+variable "environment" {}
+variable "user_name" {}
+variable "password" {}
+variable "database_name" {}
