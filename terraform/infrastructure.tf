@@ -5,6 +5,10 @@ terraform {
       version = "5.37.0"
     }
   }
+  backend "gcs" {
+    bucket = "terraform-bucket-github-actions"
+    prefix = "terraform/state"
+  }
 }
 
 provider "google" {
