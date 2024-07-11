@@ -1,0 +1,12 @@
+variable "project_id" {}
+variable "project_region" {}
+variable "database_type" {}
+variable "database_instance_name" {}
+variable "machine_type" {}
+variable "availability_type" {}
+variable "edition" {}
+variable "environment" {}
+variable "USER_NAME" {}
+variable "PASSWORD" {}
+variable "database_name" {}
+variable "GOOGLE_CREDENTIALS" {}

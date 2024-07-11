@@ -1,0 +1,38 @@
+name: INFRASTRUCTURE-PROVISIONING
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Infrastructure Setup'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+        env:
+          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: ./terraform
+        run: terraform plan -out=tfplan -detailed-exitcode
+        env:
+          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
+          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
+          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
+        env:
+          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
+          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
+          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
