@@ -18,23 +18,16 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Create directory for credentials
-        run: mkdir -p $HOME/.gcloud
-
-      - name: Set up Google Cloud credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > $HOME/.gcloud/gcloud-key.json
-
-
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/.gcloud/gcloud-key.json
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS   }}
 
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/.gcloud/gcloud-key.json
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
