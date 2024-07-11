@@ -6,6 +6,7 @@ variable "machine_type" {}
 variable "availability_type" {}
 variable "edition" {}
 variable "environment" {}
-variable "user_name" {}
-variable "password" {}
+variable "USER_NAME" {}
+variable "PASSWORD" {}
 variable "database_name" {}
+variable "GOOGLE_CREDENTIALS" {}
