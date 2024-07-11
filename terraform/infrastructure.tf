@@ -5,11 +5,6 @@ terraform {
       version = "5.37.0"
     }
   }
-  backend "gcs" {
-    bucket = "terraform-bucket-github-actions"
-    prefix = "terraform/state"
-    credentials = var.GOOGLE_CREDENTIALS
-  }
 }
 
 provider "google" {
