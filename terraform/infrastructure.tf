@@ -16,7 +16,6 @@ terraform {
 provider "google" {
   project = var.project_id
   region = var.project_region
-  credentials = var.GOOGLE_APPLICATION_CREDENTIALS
 }
 
 resource "google_sql_database_instance" "postgres-database-instance" {
