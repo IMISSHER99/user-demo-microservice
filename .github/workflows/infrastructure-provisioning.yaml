@@ -14,18 +14,9 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Configure Terraform Backend
-        run: |
-          echo "terraform {
-            backend \"gcs\" {
-              bucket  = \"terraform-state-bucket\"
-              prefix  = \"terraform/state\"
-            }
-          }" > backend.tf
-
       - name: Terraform Init
         working-directory: ./terraform
-        run: terraform init -backend-config="bucket=terraform-state-bucket" -backend-config="prefix=terraform/state"
+        run: terraform init -backend-config="bucket=terraform-bucket-github-actions" -backend-config="prefix=terraform/state"
         env:
           TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS   }}
 
