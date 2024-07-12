@@ -72,9 +72,6 @@ resource "google_compute_global_address" "private_ip_alloc" {
   address_type  = "INTERNAL"
   prefix_length = 24
   network       = google_compute_network.custom-vpc-network.self_link
-  labels = {
-    "environment": var.environment
-  }
 }
 
 # Create or update a private services connection
