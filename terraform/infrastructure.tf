@@ -72,6 +72,9 @@ resource "google_compute_global_address" "private_ip_alloc" {
   address_type  = "INTERNAL"
   prefix_length = 24
   network       = google_compute_network.custom-vpc-network.self_link
+  labels = {
+    "environment": var.environment
+  }
 }
 
 # Create or update a private services connection
@@ -80,6 +83,7 @@ resource "google_service_networking_connection" "private_connection" {
   service                = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_alloc.name]
   depends_on = [google_compute_global_address.private_ip_alloc]
+
 }
 
 resource "google_sql_database_instance" "postgres-database-instance" {
@@ -114,4 +118,16 @@ resource "google_sql_user" "users" {
 resource "google_sql_database" "database" {
   instance = google_sql_database_instance.postgres-database-instance.name
   name     = var.database_name
+}
+
+resource "null_resource" "destroy" {
+  triggers = {
+    instance_name = var.database_instance_name
+  }
+  provisioner "local-exec" {
+    command = <<EOT
+        terraform destroy -auto-approve
+    EOT
+  }
+  depends_on = [google_sql_database_instance.postgres-database-instance]
 }
