@@ -1,0 +1,34 @@
+name: DELETE-INFRASTRUCTURE
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Destroy Infrastructure Setup'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_TOKEN }}"
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+        env:
+          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
+
+      - name: Terraform destroy
+        working-directory: ./terraform
+        run: terraform destroy -auto-approve
+        env:
+          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
+          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
+          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
