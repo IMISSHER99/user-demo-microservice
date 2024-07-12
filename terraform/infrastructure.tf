@@ -83,6 +83,7 @@ resource "google_service_networking_connection" "private_connection" {
 
 }
 
+# Creating a cloud sql database instance
 resource "google_sql_database_instance" "postgres-database-instance" {
   database_version = var.database_type
   name             = var.database_instance_name
@@ -106,25 +107,15 @@ resource "google_sql_database_instance" "postgres-database-instance" {
   deletion_protection = false
 }
 
+# Creating a user for that instance
 resource "google_sql_user" "users" {
   instance = google_sql_database_instance.postgres-database-instance.name
   name     = var.USER_NAME
   password = var.PASSWORD
 }
 
+# Creating a database
 resource "google_sql_database" "database" {
   instance = google_sql_database_instance.postgres-database-instance.name
   name     = var.database_name
-}
-
-resource "null_resource" "destroy" {
-  triggers = {
-    instance_name = var.database_instance_name
-  }
-  provisioner "local-exec" {
-    command = <<EOT
-        terraform destroy -auto-approve
-    EOT
-  }
-  depends_on = [google_sql_database_instance.postgres-database-instance]
 }
