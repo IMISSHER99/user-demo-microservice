@@ -9,4 +9,4 @@ variable "environment" {}
 variable "USER_NAME" {}
 variable "PASSWORD" {}
 variable "database_name" {}
-variable "GOOGLE_CREDENTIALS" {}
+variable "GOOGLE_APPLICATION_CREDENTIALS" {}

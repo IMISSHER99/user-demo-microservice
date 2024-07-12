@@ -1,10 +1,10 @@
-name: INFRASTRUCTURE-PROVISIONING
+name: DELETE-INFRASTRUCTURE
 on:
   workflow_dispatch:
 
 jobs:
   terraform:
-    name: 'Infrastructure Setup'
+    name: 'Destroy Infrastructure Setup'
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +23,11 @@ jobs:
         working-directory: ./terraform
         run: terraform init
         env:
-            TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
-
-      - name: Terraform Plan
-        id: plan
-        working-directory: ./terraform
-        run: terraform plan -out=tfplan -detailed-exitcode
-        env:
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
-          TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
-          TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
 
-      - name: Terraform Apply
+      - name: Terraform destroy
         working-directory: ./terraform
-        run: terraform apply -auto-approve tfplan
+        run: terraform destroy -auto-approve
         env:
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
