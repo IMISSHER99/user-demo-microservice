@@ -10,3 +10,16 @@ variable "USER_NAME" {}
 variable "PASSWORD" {}
 variable "database_name" {}
 variable "GOOGLE_APPLICATION_CREDENTIALS" {}
+variable "vpc_name" {}
+variable "route_mode" {}
+variable "subnet_name" {}
+variable "ip_address_range" {}
+variable "stack_type" {}
+variable "aggregate_interval" {}
+variable "include_all_metadata" {}
+variable "allow_traffic_to_cloud_sql" {}
+variable "protocol" {}
+variable "cloud_sql_port" {}
+variable "http_port" {}
+variable "https_port" {}
+variable "allow_traffic_to_gke" {}
