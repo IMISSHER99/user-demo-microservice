@@ -19,7 +19,7 @@ provider "google" {
 }
 
 # Creating a custom VPC
-resource "google_compute_network" "custom_vpc_network" {
+resource "google_compute_network" "custom-vpc-network" {
   name = var.vpc_name
   project = var.project_id
   auto_create_subnetworks = false
@@ -30,14 +30,14 @@ resource "google_compute_network" "custom_vpc_network" {
 }
 
 # Creating a custom subnet
-resource "google_compute_subnetwork" "custom_subnet" {
+resource "google_compute_subnetwork" "custom-subnet" {
   ip_cidr_range = var.ip_address_range
   region        = var.project_region
   name          = var.subnet_name
-  network       = google_compute_network.custom_vpc_network.name
+  network       = google_compute_network.custom-vpc-network.name
   private_ip_google_access = true
   stack_type = var.stack_type
-  depends_on = [google_compute_network.custom_vpc_network]
+  depends_on = [google_compute_network.custom-vpc-network]
 
   log_config {
     aggregation_interval = var.aggregate_interval
@@ -48,9 +48,9 @@ resource "google_compute_subnetwork" "custom_subnet" {
 }
 
 # Create custom firewall rules to allow communication to cloud SQL
-resource "google_compute_firewall" "allow_traffic_to_cloud_sql" {
+resource "google_compute_firewall" "allow-traffic-to-cloud-sql" {
   name    = var.allow_traffic_to_cloud_sql
-  network = google_compute_network.custom_vpc_network.name
+  network = google_compute_network.custom-vpc-network.name
   allow {
     protocol = var.protocol
     ports = [var.cloud_sql_port]
@@ -60,9 +60,9 @@ resource "google_compute_firewall" "allow_traffic_to_cloud_sql" {
 }
 
 # Create custom firewall rules to allow communication to GKE
-resource "google_compute_firewall" "allow_traffic_to_gke" {
+resource "google_compute_firewall" "allow-traffic-to-gke" {
   name    = var.allow_traffic_to_gke
-  network = google_compute_network.custom_vpc_network.name
+  network = google_compute_network.custom-vpc-network.name
   allow {
     protocol = var.protocol
     ports = [var.http_port, var.https_port]
@@ -85,7 +85,7 @@ resource "google_sql_database_instance" "postgres-database-instance" {
     }
     ip_configuration {
       ipv4_enabled = true
-      private_network = google_compute_network.custom_vpc_network.id
+      private_network = google_compute_network.custom-vpc-network.id
       enable_private_path_for_google_cloud_services = true
     }
   }
