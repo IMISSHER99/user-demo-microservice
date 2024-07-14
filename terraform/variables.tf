@@ -9,7 +9,6 @@ variable "environment" {}
 variable "USER_NAME" {}
 variable "PASSWORD" {}
 variable "database_name" {}
-variable "GOOGLE_APPLICATION_CREDENTIALS" {}
 variable "vpc_name" {}
 variable "route_mode" {}
 variable "subnet_name" {}
