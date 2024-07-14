@@ -5,16 +5,12 @@ terraform {
       version = "5.37.0"
     }
   }
-
-  backend "gcs" {
-    bucket = "terraform-bucket-github-actions"
-    prefix = "terraform/state"
-  }
 }
 
 provider "google" {
   project = var.project_id
   region  = var.project_region
+  credentials = file("/Users/amith/Downloads/capable-mind-428017-c2-a6ac4b046ed7.json")
 }
 
 # Creating a custom VPC
@@ -65,11 +61,47 @@ resource "google_compute_firewall" "allow-traffic-to-gke" {
 }
 
 
+resource "google_container_cluster" "kubernetes_cluster" {
+  name = var.kubernetes_cluster
+  location = var.project_region
+  remove_default_node_pool = true
+  initial_node_count = 1
+  deletion_protection = false
+  network = google_compute_network.custom-vpc-network.name
+  subnetwork = google_compute_subnetwork.custom-subnet.name
+
+  node_config {
+    service_account = "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+    preemptible = true
+    machine_type = "e2-medium"
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+}
+
+resource "google_container_node_pool" "node_pool" {
+  cluster = google_container_cluster.kubernetes_cluster.name
+  location = var.project_region
+  name = var.kubernetes_node_pool
+  node_count = 1
+
+  node_config {
+    service_account = "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+    preemptible = true
+    machine_type = "e2-medium"
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+
+  }
+}
+
 # Create an IP address range for VPC peering
 resource "google_compute_global_address" "cloud_sql_private_ip" {
-  name          = var.cloud_sql_private_ip
-  purpose       = var.private_ip_purpose
-  address_type  = var.private_ip_type
+  name          = "private-ip-alloc"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
   prefix_length = 24
   network       = google_compute_network.custom-vpc-network.self_link
 }
@@ -78,7 +110,9 @@ resource "google_compute_global_address" "cloud_sql_private_ip" {
 resource "google_service_networking_connection" "private_service_connection" {
   network                = google_compute_network.custom-vpc-network.name
   service                = var.service_type
-  reserved_peering_ranges = []
+  reserved_peering_ranges = [google_compute_global_address.cloud_sql_private_ip.name]
+  depends_on = [google_compute_global_address.cloud_sql_private_ip]
+
 }
 
 # Creating a cloud sql database instance
@@ -116,35 +150,4 @@ resource "google_sql_user" "users" {
 resource "google_sql_database" "database" {
   instance = google_sql_database_instance.postgres-database-instance.name
   name     = var.database_name
-}
-
-resource "google_container_cluster" "kubernetes_cluster" {
-  name = var.kubernetes_cluster
-  location = var.project_region
-  remove_default_node_pool = true
-  initial_node_count = 3
-  network = google_compute_network.custom-vpc-network.name
-  subnetwork = google_compute_subnetwork.custom-subnet.name
-  node_config {
-    machine_type = "e2-medium"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-  }
-}
-
-resource "google_container_node_pool" "node_pool" {
-  cluster = google_container_cluster.kubernetes_cluster.name
-  location = var.project_region
-  name = var.kubernetes_node_pool
-  node_count = 3
-
-  node_config {
-    preemptible = true
-    machine_type = "e2-medium"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-
-  }
 }
