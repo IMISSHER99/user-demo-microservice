@@ -79,8 +79,6 @@ resource "google_service_networking_connection" "private_service_connection" {
   network                = google_compute_network.custom-vpc-network.name
   service                = var.service_type
   reserved_peering_ranges = []
-  depends_on = [google_compute_global_address.cloud_sql_private_ip]
-
 }
 
 # Creating a cloud sql database instance
