@@ -22,7 +22,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
-          workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-action-infrastructure/providers/GitHub'
+          workload_identity_provider: 'projects/capable-mind-428017-c2/locations/global/workloadIdentityPools/github-action-infrastructure/providers/GitHub'
 
       - name: Terraform Init
         working-directory: ./terraform
