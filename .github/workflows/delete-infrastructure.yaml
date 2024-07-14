@@ -17,18 +17,17 @@ jobs:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_TOKEN }}"
+          service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+          workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-infrastructure-action/providers/github'
+
 
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
-        env:
-          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
 
       - name: Terraform destroy
         working-directory: ./terraform
         run: terraform destroy -auto-approve
         env:
-          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
