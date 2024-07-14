@@ -2,6 +2,10 @@ name: INFRASTRUCTURE-PROVISIONING
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   terraform:
     name: 'Infrastructure Setup'
@@ -17,20 +21,18 @@ jobs:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_TOKEN }}"
+          service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+          workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-action-infrastructure/providers/GitHub'
 
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
-        env:
-            TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
 
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform
         run: terraform plan -out=tfplan -detailed-exitcode
         env:
-          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
 
@@ -38,6 +40,5 @@ jobs:
         working-directory: ./terraform
         run: terraform apply -auto-approve tfplan
         env:
-          TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}

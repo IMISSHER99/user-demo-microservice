@@ -10,7 +10,6 @@ terraform {
 provider "google" {
   project = var.project_id
   region  = var.project_region
-  credentials = file("/Users/amith/Downloads/capable-mind-428017-c2-a6ac4b046ed7.json")
 }
 
 # Creating a custom VPC
