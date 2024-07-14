@@ -139,6 +139,7 @@ resource "google_container_node_pool" "node_pool" {
   cluster = google_container_cluster.kubernetes_cluster.name
   location = var.project_region
   name = var.kubernetes_node_pool
+  node_count = 3
 
   node_config {
     preemptible = true
