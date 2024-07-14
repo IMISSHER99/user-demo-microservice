@@ -23,3 +23,9 @@ variable "cloud_sql_port" {}
 variable "http_port" {}
 variable "https_port" {}
 variable "allow_traffic_to_gke" {}
+variable "cloud_sql_private_ip" {}
+variable "private_ip_type" {}
+variable "private_ip_purpose" {}
+variable "service_type" {}
+variable "kubernetes_cluster" {}
+variable "kubernetes_node_pool" {}
