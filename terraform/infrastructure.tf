@@ -89,6 +89,11 @@ resource "google_container_cluster" "kubernetes_cluster" {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
 
+  network_policy {
+    enabled = true
+    provider = var.kubernetes_network_provider
+  }
+
 
   node_config {
     service_account = var.service_account

@@ -32,3 +32,4 @@ variable "service_account" {}
 variable "kubernetes_machine_type" {}
 variable "kubernetes_oauth_scope" {}
 variable "kubernetes_private_ip_range" {}
+variable "kubernetes_network_provider" {}
