@@ -81,6 +81,15 @@ resource "google_container_cluster" "kubernetes_cluster" {
     master_ipv4_cidr_block = var.kubernetes_private_ip_range
   }
 
+# enable shielded nodes
+  enable_shielded_nodes = true
+
+# enable workload identity
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
+
   node_config {
     service_account = var.service_account
     preemptible = true
@@ -88,6 +97,11 @@ resource "google_container_cluster" "kubernetes_cluster" {
     oauth_scopes = [
       var.kubernetes_oauth_scope
     ]
+
+    shielded_instance_config {
+      enable_integrity_monitoring = true
+      enable_secure_boot = true
+    }
   }
 # Not really needed as it defaults to that logging service
   logging_service = "logging.googleapis.com/kubernetes"
@@ -108,7 +122,6 @@ resource "google_container_node_pool" "node_pool" {
     oauth_scopes = [
       var.kubernetes_oauth_scope
     ]
-
   }
 }
 
