@@ -64,7 +64,7 @@ resource "google_compute_firewall" "allow-traffic-to-gke" {
   source_tags = [var.allow_traffic_to_gke]
 }
 
-
+# Create a kubernetes cluster
 resource "google_container_cluster" "kubernetes_cluster" {
   name = var.kubernetes_cluster
   location = var.project_region
@@ -74,16 +74,27 @@ resource "google_container_cluster" "kubernetes_cluster" {
   network = google_compute_network.custom-vpc-network.name
   subnetwork = google_compute_subnetwork.custom-subnet.name
 
+# Enable private cluster config
+  private_cluster_config {
+    enable_private_nodes = true
+    enable_private_endpoint = false
+    master_ipv4_cidr_block = var.kubernetes_private_ip_range
+  }
+
   node_config {
-    service_account = "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+    service_account = var.service_account
     preemptible = true
-    machine_type = "e2-medium"
+    machine_type = var.kubernetes_machine_type
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+      var.kubernetes_oauth_scope
     ]
   }
+# Not really needed as it defaults to that logging service
+  logging_service = "logging.googleapis.com/kubernetes"
+  monitoring_service = "monitoring.googleapis.com/kubernetes"
 }
 
+# create a node pool for the cluster
 resource "google_container_node_pool" "node_pool" {
   cluster = google_container_cluster.kubernetes_cluster.name
   location = var.project_region
@@ -91,11 +102,11 @@ resource "google_container_node_pool" "node_pool" {
   node_count = 1
 
   node_config {
-    service_account = "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+    service_account = var.service_account
     preemptible = true
-    machine_type = "e2-medium"
+    machine_type = var.kubernetes_machine_type
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+      var.kubernetes_oauth_scope
     ]
 
   }
@@ -103,9 +114,9 @@ resource "google_container_node_pool" "node_pool" {
 
 # Create an IP address range for VPC peering
 resource "google_compute_global_address" "cloud_sql_private_ip" {
-  name          = "private-ip-alloc"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
+  name          = var.cloud_sql_private_ip
+  purpose       = var.private_ip_purpose
+  address_type  = var.private_ip_type
   prefix_length = 24
   network       = google_compute_network.custom-vpc-network.self_link
 }

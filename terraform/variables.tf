@@ -28,3 +28,7 @@ variable "private_ip_purpose" {}
 variable "service_type" {}
 variable "kubernetes_cluster" {}
 variable "kubernetes_node_pool" {}
+variable "service_account" {}
+variable "kubernetes_machine_type" {}
+variable "kubernetes_oauth_scope" {}
+variable "kubernetes_private_ip_range" {}
