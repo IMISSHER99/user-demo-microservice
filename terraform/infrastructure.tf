@@ -180,3 +180,18 @@ resource "google_sql_database" "database" {
   instance = google_sql_database_instance.postgres-database-instance.name
   name     = var.database_name
 }
+
+resource "google_artifact_registry_repository" "artifact_registry" {
+  location = var.project_region
+  repository_id = var.artifact_repository_id
+  format = var.artifact_repository_format
+  cleanup_policy_dry_run = false
+  cleanup_policies {
+    id = var.artifact_repository_cleanup_policy_id
+    action = "DELETE"
+    condition {
+      tag_state = "ANY"
+      older_than = "60d"
+    }
+  }
+}
