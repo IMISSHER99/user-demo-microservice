@@ -191,7 +191,7 @@ resource "google_artifact_registry_repository" "artifact_registry" {
     action = "DELETE"
     condition {
       tag_state = "ANY"
-      older_than = "60d"
+      older_than = "2592000s"
     }
   }
 }
