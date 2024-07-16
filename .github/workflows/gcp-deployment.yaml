@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: microservice_artifact-registry
   REGION: asia-south1
-  REPOSITORY: asia-south1-docker.pkg.dev/awwwards-clone-project/awwwards-clone-repo/awwwards-clone
+  REPOSITORY: asia-south1-docker.pkg.dev/capable-mind-428017-c2/microservice-artifact-registry/user-microservice
 
 jobs:
   deploy_to_artifact_registry:
