@@ -183,7 +183,7 @@ resource "google_sql_database" "database" {
 
 resource "google_artifact_registry_repository" "artifact_registry" {
   location = var.project_region
-  repository_id = var.artifact_repository_id
+  repository_id = var.ARTIFACT_REPOSITORY_ID
   format = var.artifact_repository_format
   cleanup_policy_dry_run = false
   cleanup_policies {
