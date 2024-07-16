@@ -33,6 +33,6 @@ variable "kubernetes_machine_type" {}
 variable "kubernetes_oauth_scope" {}
 variable "kubernetes_private_ip_range" {}
 variable "kubernetes_network_provider" {}
-variable "artifact_repository_id" {}
+variable "ARTIFACT_REPOSITORY_ID" {}
 variable "artifact_repository_format" {}
 variable "artifact_repository_cleanup_policy_id" {}
