@@ -5,18 +5,15 @@ terraform {
       version = "5.37.0"
     }
   }
-
   backend "gcs" {
     bucket = "terraform-bucket-github-actions"
     prefix = "terraform/state"
   }
 }
-
 provider "google" {
   project = var.project_id
   region  = var.project_region
 }
-
 # Creating a custom VPC
 resource "google_compute_network" "custom-vpc-network" {
   name                    = var.vpc_name
@@ -34,7 +31,6 @@ resource "google_compute_subnetwork" "custom-subnet" {
   network                  = google_compute_network.custom-vpc-network.name
   private_ip_google_access = true
   stack_type               = var.stack_type
-
   log_config {
     aggregation_interval = var.aggregate_interval
     flow_sampling        = 0.5
