@@ -1,5 +1,6 @@
 variable "project_id" {}
 variable "project_region" {}
+variable "project_zone" {}
 variable "database_type" {}
 variable "database_instance_name" {}
 variable "machine_type" {}
