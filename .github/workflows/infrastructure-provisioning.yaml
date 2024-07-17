@@ -22,20 +22,28 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
 <<<<<<< HEAD
+<<<<<<< HEAD
           credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_TOKEN }}"
 =======
           service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
           workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-infrastructure-action/providers/github'
 >>>>>>> golden
+=======
+          service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+          workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-infrastructure-action/providers/github'
+>>>>>>> db1a6ed91f48e263adadc2697e85b23d77a6f3ac
 
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
 <<<<<<< HEAD
+<<<<<<< HEAD
         env:
             TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
 =======
 >>>>>>> golden
+=======
+>>>>>>> db1a6ed91f48e263adadc2697e85b23d77a6f3ac
 
       - name: Terraform Plan
         id: plan
@@ -43,9 +51,12 @@ jobs:
         run: terraform plan -out=tfplan -detailed-exitcode
         env:
 <<<<<<< HEAD
+<<<<<<< HEAD
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
 =======
 >>>>>>> golden
+=======
+>>>>>>> db1a6ed91f48e263adadc2697e85b23d77a6f3ac
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
 
@@ -54,8 +65,11 @@ jobs:
         run: terraform apply -auto-approve tfplan
         env:
 <<<<<<< HEAD
+<<<<<<< HEAD
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
 =======
 >>>>>>> golden
+=======
+>>>>>>> db1a6ed91f48e263adadc2697e85b23d77a6f3ac
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
