@@ -54,11 +54,10 @@ jobs:
       - name: Docker Auth
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-#
-#      - name: Build image
-#        run: docker build . --file Dockerfile --tag ${{ env.REPOSITORY }}
-#        working-directory: /home/runner/work/Awwwards/Awwwards
-#
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag ${{ env.REPOSITORY }}
+
 #
 #      - name: Push image
 #        run: docker push ${{ env.REPOSITORY }}
