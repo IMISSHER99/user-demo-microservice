@@ -6,6 +6,10 @@ on:
     types: [opened]
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   PROJECT_ID: microservice_artifact-registry
   REGION: asia-south1
