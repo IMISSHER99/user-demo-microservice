@@ -58,9 +58,8 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag ${{ env.REPOSITORY }}
 
-#
-#      - name: Push image
-#        run: docker push ${{ env.REPOSITORY }}
+      - name: Push image
+        run: docker push ${{ env.REPOSITORY }}
 
 
 
