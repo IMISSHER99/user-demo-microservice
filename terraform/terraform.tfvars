@@ -34,4 +34,3 @@ kubernetes_network_provider = "CALICO"
 artifact_repository_format = "DOCKER"
 artifact_repository_cleanup_policy_id = "cleanup-policy"
 ARTIFACT_REPOSITORY_ID = "microservice-artifact-registry"
-
