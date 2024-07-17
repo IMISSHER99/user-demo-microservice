@@ -2,6 +2,13 @@ name: DELETE-INFRASTRUCTURE
 on:
   workflow_dispatch:
 
+<<<<<<< HEAD
+=======
+permissions:
+  id-token: write
+  contents: read
+
+>>>>>>> golden
 jobs:
   terraform:
     name: 'Destroy Infrastructure Setup'
@@ -17,18 +24,30 @@ jobs:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
+<<<<<<< HEAD
           credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_TOKEN }}"
+=======
+          service_account: "dummy-524@capable-mind-428017-c2.iam.gserviceaccount.com"
+          workload_identity_provider: 'projects/929430503076/locations/global/workloadIdentityPools/github-infrastructure-action/providers/github'
+
+>>>>>>> golden
 
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
+<<<<<<< HEAD
         env:
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
+=======
+>>>>>>> golden
 
       - name: Terraform destroy
         working-directory: ./terraform
         run: terraform destroy -auto-approve
         env:
+<<<<<<< HEAD
           TF_VAR_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_APPLICATION_CREDENTIALS   }}
+=======
+>>>>>>> golden
           TF_VAR_USER_NAME: ${{ secrets.TF_VAR_USER_NAME }}
           TF_VAR_PASSWORD: ${{ secrets.TF_VAR_PASSWORD }}
