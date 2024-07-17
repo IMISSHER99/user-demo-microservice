@@ -28,7 +28,7 @@ jobs:
           cache: 'gradle'
 
       - name: Install Dependencies
-        run: './gradlew install -no-daemon'
+        run: './gradlew build -no-daemon'
 
 #      # Building the application
 #      - name: Build Application
