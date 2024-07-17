@@ -70,17 +70,17 @@ resource "google_container_cluster" "kubernetes_cluster" {
   network = google_compute_network.custom-vpc-network.name
   subnetwork = google_compute_subnetwork.custom-subnet.name
 
-  # Enable private cluster config
+# Enable private cluster config
   private_cluster_config {
     enable_private_nodes = true
     enable_private_endpoint = false
     master_ipv4_cidr_block = var.kubernetes_private_ip_range
   }
 
-  # enable shielded nodes
+# enable shielded nodes
   enable_shielded_nodes = true
 
-  # enable workload identity
+# enable workload identity
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
@@ -104,7 +104,7 @@ resource "google_container_cluster" "kubernetes_cluster" {
       enable_secure_boot = true
     }
   }
-  # Not really needed as it defaults to that logging service
+# Not really needed as it defaults to that logging service
   logging_service = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
 }
