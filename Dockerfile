@@ -9,6 +9,9 @@ RUN gradle clean build -Dquarkus.package.type=fast-jar
 FROM openjdk:21-jdk-slim
 WORKDIR /app
 COPY --from=build /workspace/build/quarkus-app/lib ./lib
-COPY --from=build /workspace/build/quarkus-app/quarkus-run.jar ./
+COPY --from=build /workspace/build/quarkus-app/*.jar ./
+COPY --from=build /workspace/build/quarkus-app/quarkus-application.dat ./
+COPY --from=build /workspace/build/quarkus-app/app/ ./app/
+COPY --from=build /workspace/build/quarkus-app/quarkus/ ./quarkus/
 
 CMD ["java", "-jar", "quarkus-run.jar"]
